@@ -13,10 +13,7 @@ module.exports = function(file,entryBack,done){
   parse.on('entry',function(stream){
 
     entryBack(stream,once(function(){
-      // pull request on node-tar https://github.com/npm/node-tar/pull/61
-      if(stream.discard) stream.discard()
-      else stream.discard = true;
-      stream.on('data',noop)
+      stream.abort()
     }))
     
   })
