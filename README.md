@@ -1,10 +1,10 @@
-tar-entires
------------
+tar-files
+---------
 
 convenience wrapper around fs gunzip and node-tar to stream file entries' data.
 
 ```js
-var te = require('tar-entries')
+var te = require('tar-files')
 var eos = require('end-of-stream')
 
 te('package.tar',function(stream,cb){
