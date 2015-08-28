@@ -35,5 +35,9 @@ module.exports = function(file,entryBack,done){
 
 }
 
+// expects an object stream of tar paths
+module.exports.batch = function(){
+
+}
 
 function noop(){}
