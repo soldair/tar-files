@@ -1,6 +1,6 @@
 {
   "name": "tar-files",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "convenience wrapper around fs gunzip and node-tar to stream file entries' data.",
   "main": "index.js",
   "scripts": {
