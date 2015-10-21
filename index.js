@@ -10,11 +10,17 @@ module.exports = function(file,entryBack,done){
   var gz = gunzip()
   var parse = tar.Parse()
 
+  var entries = {}
   parse.on('entry',function(stream){
-
+    entries[stream.path] = stream
     entryBack(stream,once(function(){
+      delete entries[stream.path];
       stream.abort()
     }))
+
+    stream.on('end',function(){
+      delete entries[stream.path]
+    })
     
   })
 
@@ -23,6 +29,12 @@ module.exports = function(file,entryBack,done){
   // end of stream not trigering for parse streams...
   parse.on('end',function(){
     done()
+    //clean up any orphan entries
+    //this only happens when the last entry of a tar file is incomplete
+    //the parse stream emits end but the entry stream never ends.
+    Object.keys(entries).forEach(function(k){
+      entries[k].end();
+    })
   }).on('error',onerror)
 
   rs.pipe(gz).pipe(parse)
