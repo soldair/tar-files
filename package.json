@@ -8,6 +8,7 @@
   },
   "author": "Ryan Day <soldair@gmail.com>",
   "license": "ISC",
+  "homepage": "https://github.com/soldair/tar-files",
   "dependencies": {
     "end-of-stream": "^1.1.0",
     "gunzip-maybe": "^1.2.1",
