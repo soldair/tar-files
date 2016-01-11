@@ -6,7 +6,7 @@ var eos = require('end-of-stream')
 
 module.exports = function(file,entryBack,done){
   done = once(done||noop)
-  var rs = fs.createReadStream(file)
+  var rs = file.pipe?file:fs.createReadStream(file)
   var gz = gunzip()
   var parse = tar.Parse()
 
@@ -47,9 +47,5 @@ module.exports = function(file,entryBack,done){
 
 }
 
-// expects an object stream of tar paths
-module.exports.batch = function(){
-
-}
 
 function noop(){}
