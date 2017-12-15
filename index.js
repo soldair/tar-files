@@ -1,21 +1,19 @@
 var tar = require('tar')
 var fs = require('fs')
-var gunzip = require('gunzip-maybe')
 var once = require('once')
 var eos = require('end-of-stream')
 
 module.exports = function(file,entryBack,done){
   done = once(done||noop)
   var rs = file.pipe?file:fs.createReadStream(file)
-  var gz = gunzip()
-  var parse = tar.Parse()
+  var parse = new tar.Parse()
 
   var entries = {}
   parse.on('entry',function(stream){
     entries[stream.path] = stream
+
     entryBack(stream,once(function(){
       delete entries[stream.path];
-      stream.abort()
     }))
 
     stream.on('end',function(){
@@ -25,9 +23,10 @@ module.exports = function(file,entryBack,done){
   })
 
   eos(rs,onerror)
-  eos(gz,onerror)
+
   // end of stream not trigering for parse streams...
   parse.on('end',function(){
+
     done()
     //clean up any orphan entries
     //this only happens when the last entry of a tar file is incomplete
@@ -37,7 +36,7 @@ module.exports = function(file,entryBack,done){
     })
   }).on('error',onerror)
 
-  rs.pipe(gz).pipe(parse)
+  rs.pipe(parse)
 
   return parse;
 

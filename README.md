@@ -13,8 +13,9 @@ te('package.tar',function(stream,cb){
   if(stream.path === "package/README.md") {
     eos(stream.pipe(fs.createWriteStream('./tar-README.md')),cb)
   } else {
-    // skip this entry
-    cb();
+    // skip this entry (make sure to call stream.resume() if skipping)
+    stream.resume()
+    cb()
   }
 },function(err){
   

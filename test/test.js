@@ -11,7 +11,6 @@ test("can read tar",function(t){
   var tmpFile = __dirname+'/'+Date.now()+'-README.md'
 
   te(__dirname+'/fixture.tgz',function(stream,cb){
-
     count++;
 
     if(stream.path === "package/README.md") {
@@ -21,6 +20,7 @@ test("can read tar",function(t){
       eos(stream.pipe(fs.createWriteStream(tmpFile)),cb)
     } else {
       // skip this entry
+      stream.resume()
       cb();
     }
 
